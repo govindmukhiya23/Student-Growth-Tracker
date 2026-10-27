@@ -1,0 +1,18 @@
+#!/bin/sh
+# Pre-commit hook: secret scanning via gitleaks
+# Install gitleaks: https://github.com/gitleaks/gitleaks#installing
+
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --no-banner
+  if [ $? -ne 0 ]; then
+    echo "❌  gitleaks found secrets in staged files. Commit blocked."
+    echo "    Run: gitleaks protect --staged --verbose  to see details."
+    exit 1
+  fi
+else
+  echo "⚠️   gitleaks not found — secret scanning skipped."
+  echo "    Install: https://github.com/gitleaks/gitleaks#installing"
+fi
+
+# Run lint-staged (ESLint + Prettier on staged files)
+npx lint-staged

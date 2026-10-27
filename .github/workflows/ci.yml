@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed for gitleaks history scan
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Secret scanning (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Server tests
+        run: npm run test --workspace=server
+        env:
+          NODE_ENV: test
+          PORT: 5001
+          MONGODB_URI: mongodb://localhost:27017/growth-tracker-test
+          REDIS_URL: redis://localhost:6379
+          JWT_ACCESS_SECRET: ci-test-access-secret-that-is-long-enough-00000
+          JWT_REFRESH_SECRET: ci-test-refresh-secret-that-is-long-enough-11111
+          COOKIE_SECRET: ci-test-cookie-secret-that-is-long-enough-222222
+          PASSWORD_PEPPER: ci-test-password-pepper-long-enough-3333333333333
+          RESEND_API_KEY: re_test_placeholder
+          CLIENT_ORIGIN: http://localhost:5173
+
+      - name: Client tests
+        run: npm run test --workspace=client
