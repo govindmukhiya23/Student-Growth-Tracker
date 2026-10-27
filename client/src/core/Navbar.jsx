@@ -35,6 +35,13 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-4">
+              <Link
+                to="/leaderboard"
+                className="text-xs font-medium text-slate-300 hover:text-white transition-colors px-2.5 py-1.5"
+              >
+                Leaderboard
+              </Link>
+
               {isAdmin ? (
                 <>
                   <Link
@@ -52,12 +59,20 @@ export default function Navbar() {
                   </Link>
                 </>
               ) : (user.status === 'approved' || user.status === 'active') ? (
-                <Link
-                  to="/posts/mine"
-                  className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-colors border border-indigo-500/30 flex items-center gap-1.5"
-                >
-                  My Submissions
-                </Link>
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-colors border border-indigo-500/30 flex items-center gap-1.5"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/posts/mine"
+                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                  >
+                    My Submissions
+                  </Link>
+                </>
               ) : null}
 
               {/* User badge */}
@@ -94,6 +109,12 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-3">
+              <Link
+                to="/leaderboard"
+                className="text-xs font-medium text-slate-300 hover:text-white transition-colors px-3 py-1.5"
+              >
+                Leaderboard
+              </Link>
               <Link
                 to="/login"
                 className="text-xs font-medium text-slate-300 hover:text-white transition-colors px-3 py-1.5"

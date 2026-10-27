@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../core/api';
-import SubmitPostModal from './SubmitPostModal.jsx';
+import SubmitPostModal from '../../core/SubmitPostModal.jsx';
 
 export default function MyPostsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

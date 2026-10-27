@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../../core/api';
+import api from './api';
 
 const LINKEDIN_URL_PATTERN =
   /^https:\/\/(www\.)?linkedin\.com\/(posts\/[^/?#]+|feed\/update\/urn:li:[^/?#]+)/i;
