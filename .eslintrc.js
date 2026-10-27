@@ -12,11 +12,11 @@ module.exports = {
       },
     },
     'boundaries/elements': [
-      { type: 'core',    pattern: 'server/src/core/**' },
-      { type: 'feature', pattern: 'server/src/features/*/**' },
-      { type: 'shared',  pattern: 'shared/src/**' },
+      { type: 'core',           pattern: 'server/src/core/**' },
+      { type: 'feature',        pattern: 'server/src/features/(*)', capture: ['featureName'] },
+      { type: 'shared',         pattern: 'shared/src/**' },
       { type: 'client-core',    pattern: 'client/src/core/**' },
-      { type: 'client-feature', pattern: 'client/src/features/*/**' },
+      { type: 'client-feature', pattern: 'client/src/features/(*)', capture: ['featureName'] },
     ],
   },
   rules: {
@@ -27,10 +27,10 @@ module.exports = {
       {
         default: 'allow',
         rules: [
-          // server features → only core and shared are allowed
+          // server features → must not import OTHER server features
           {
             from: 'feature',
-            disallow: ['feature'],
+            disallow: [['feature', { featureName: '!${from.featureName}' }]],
             message: 'Features must not import each other. Use the event bus in core/events.js.',
           },
           // server core → must not import from features
@@ -39,10 +39,10 @@ module.exports = {
             disallow: ['feature'],
             message: 'core/ must not import from features/.',
           },
-          // client features → only client-core and shared allowed
+          // client features → must not import OTHER client features
           {
             from: 'client-feature',
-            disallow: ['client-feature'],
+            disallow: [['client-feature', { featureName: '!${from.featureName}' }]],
             message: 'Client features must not import each other. Register through the feature registry.',
           },
           {

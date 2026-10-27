@@ -1,45 +1,35 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from './api';
 
-/**
- * AuthContext — Phase 0 placeholder.
- *
- * Phase 1 will complete:
- * - login(), logout(), register() implementations
- * - Loading user from GET /auth/me on app boot
- * - Listening to auth:logout event from the API client
- */
-
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);       // null = not logged in
-  const [loading, setLoading] = useState(true);  // true while checking session on boot
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Boot: try to restore session from a valid httpOnly refresh token cookie
+  // Boot: attempt silent refresh from httpOnly cookie
   useEffect(() => {
     let cancelled = false;
     async function restoreSession() {
       try {
-        // Attempt silent refresh — if the cookie is still valid, we get a new access token
         const res = await api.post('/auth/refresh');
         if (!cancelled && res?.accessToken) {
           api.setAccessToken(res.accessToken);
-          // Fetch current user
-          const me = await api.get('/auth/me');
-          if (!cancelled) setUser(me);
+          setUser(res.user);
         }
       } catch {
-        // No valid session — stay logged out
+        // No active session — user starts logged out
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
     restoreSession();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Listen for forced logout events from the API client
+  // Listen for forced logout events from the API client (e.g. 401 refresh failure)
   useEffect(() => {
     const handler = () => {
       setUser(null);
@@ -49,11 +39,35 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener('auth:logout', handler);
   }, []);
 
+  const login = useCallback(async (username, password) => {
+    const res = await api.post('/auth/login', { username, password });
+    if (res?.accessToken) {
+      api.setAccessToken(res.accessToken);
+      setUser(res.user);
+    }
+    return res;
+  }, []);
+
+  const register = useCallback(async (formData) => {
+    return await api.post('/auth/register', formData);
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await api.get('/auth/me');
+      if (res?.user) {
+        setUser(res.user);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await api.post('/auth/logout');
     } catch {
-      // Ignore errors — clear local state regardless
+      // Clear client state regardless of server response
     } finally {
       api.clearAccessToken();
       setUser(null);
@@ -61,11 +75,25 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        login,
+        register,
+        logout,
+        refreshUser,
+        isAuthenticated: !!user,
+        isAdmin: user?.role === 'admin',
+        isApproved: user?.role === 'admin' || user?.status === 'approved' || user?.status === 'active',
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
+
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>');

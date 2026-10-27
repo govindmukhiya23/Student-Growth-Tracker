@@ -14,10 +14,10 @@
 
 const features = [
   require('./health'),
-  // Phase 1: require('./auth'),
-  // Phase 1: require('./users'),
-  // Phase 1: require('./notifications'),
-  // Phase 1: require('./audit'),
+  require('./auth'),
+  require('./users'),
+  require('./notifications'),
+  require('./audit'),
   // Phase 2: require('./posts'),
   // Phase 3: require('./points'),
   // Phase 3: require('./streaks'),

@@ -19,6 +19,7 @@ function validate(schema, source = 'body') {
     if (!result.success) {
       const err = result.error;
       err.isZodError = true; // flag for errorHandler
+      err.status = 400;
       return next(err);
     }
     // Replace with the parsed (trimmed/coerced/defaulted) version

@@ -12,8 +12,9 @@
 require('../src/core/config/env');
 
 const mongoose = require('mongoose');
-const _argon2 = require('argon2');
+const argon2 = require('argon2');
 const env = require('../src/core/config/env');
+const User = require('../src/features/users/User');
 
 async function seed() {
   if (!env.ADMIN_SEED_EMAIL || !env.ADMIN_SEED_PASSWORD) {
@@ -24,11 +25,32 @@ async function seed() {
   await mongoose.connect(env.MONGODB_URI);
   console.info('✅  MongoDB connected');
 
-  // Dynamically require the User model (won't exist until Phase 1)
-  // For Phase 0 this script is a placeholder — it will be completed in Phase 1
-  // when the User model is created.
-  console.info('ℹ️   Seed script ready. User model will be available after Phase 1.');
-  console.info(`    Will create admin: ${env.ADMIN_SEED_EMAIL} (${env.ADMIN_SEED_USERNAME})`);
+  const normalizedEmail = env.ADMIN_SEED_EMAIL.trim().toLowerCase();
+  const normalizedUsername = env.ADMIN_SEED_USERNAME.trim().toLowerCase();
+
+  const existingAdmin = await User.findOne({
+    $or: [{ email: normalizedEmail }, { username: normalizedUsername }],
+  });
+
+  if (existingAdmin) {
+    console.info(`ℹ️   Admin user already exists: ${existingAdmin.email} (${existingAdmin.username})`);
+  } else {
+    const passwordWithPepper = env.ADMIN_SEED_PASSWORD + (env.PASSWORD_PEPPER || '');
+    const passwordHash = await argon2.hash(passwordWithPepper, {
+      type: argon2.argon2id,
+    });
+
+    const admin = await User.create({
+      name: 'System Administrator',
+      email: normalizedEmail,
+      username: normalizedUsername,
+      passwordHash,
+      role: 'admin',
+      status: 'active',
+    });
+
+    console.info(`✅  Admin user created successfully: ${admin.email} (${admin.username})`);
+  }
 
   await mongoose.disconnect();
   console.info('Done.');
