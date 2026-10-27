@@ -90,6 +90,48 @@ function init() {
       // ignore
     }
   });
+
+  events.on('post.verified', async payload => {
+    try {
+      await AuditLog.create({
+        actorId: payload.adminId,
+        action: 'post.verified',
+        targetType: 'post',
+        targetId: payload.postId.toString(),
+        metadata: { studentId: payload.studentId },
+      });
+    } catch (_e) {
+      // ignore
+    }
+  });
+
+  events.on('post.rejected', async payload => {
+    try {
+      await AuditLog.create({
+        actorId: payload.adminId,
+        action: 'post.rejected',
+        targetType: 'post',
+        targetId: payload.postId.toString(),
+        metadata: { studentId: payload.studentId, reason: payload.reason },
+      });
+    } catch (_e) {
+      // ignore
+    }
+  });
+
+  events.on('post.metrics_updated', async payload => {
+    try {
+      await AuditLog.create({
+        actorId: payload.adminId,
+        action: 'post.metrics_updated',
+        targetType: 'post',
+        targetId: payload.postId.toString(),
+        metadata: { metrics: payload.metrics },
+      });
+    } catch (_e) {
+      // ignore
+    }
+  });
 }
 
 module.exports = {

@@ -36,12 +36,27 @@ export default function Navbar() {
           {user ? (
             <div className="flex items-center gap-4">
               {isAdmin ? (
+                <>
+                  <Link
+                    to="/admin/posts"
+                    className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-colors border border-indigo-500/30 flex items-center gap-1.5"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-cyan-400"></span>
+                    Post Queue
+                  </Link>
+                  <Link
+                    to="/admin/registrations"
+                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                  >
+                    User Approvals
+                  </Link>
+                </>
+              ) : (user.status === 'approved' || user.status === 'active') ? (
                 <Link
-                  to="/admin/registrations"
+                  to="/posts/mine"
                   className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-colors border border-indigo-500/30 flex items-center gap-1.5"
                 >
-                  <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse"></span>
-                  Approval Queue
+                  My Submissions
                 </Link>
               ) : null}
 

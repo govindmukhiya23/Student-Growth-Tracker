@@ -5,6 +5,10 @@ const env = require('./config/env');
 
 let connected = false;
 
+if (env.NODE_ENV === 'test') {
+  mongoose.set('bufferCommands', false);
+}
+
 async function connectDB() {
   if (connected) return;
   try {

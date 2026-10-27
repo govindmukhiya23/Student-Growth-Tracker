@@ -18,7 +18,7 @@ const features = [
   require('./users'),
   require('./notifications'),
   require('./audit'),
-  // Phase 2: require('./posts'),
+  require('./posts'),
   // Phase 3: require('./points'),
   // Phase 3: require('./streaks'),
   // Phase 3: require('./leaderboard'),

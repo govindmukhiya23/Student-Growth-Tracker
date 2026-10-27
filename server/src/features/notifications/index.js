@@ -82,6 +82,34 @@ function init() {
       // ignore
     }
   });
+
+  events.on('post.verified', async payload => {
+    try {
+      await Notification.create({
+        userId: payload.studentId,
+        title: 'Post Verified! ✨',
+        message: 'Your submitted LinkedIn post was verified by an administrator.',
+        type: 'success',
+      });
+    } catch (_e) {
+      // ignore
+    }
+  });
+
+  events.on('post.rejected', async payload => {
+    try {
+      await Notification.create({
+        userId: payload.studentId,
+        title: 'Post Review Update',
+        message: payload.reason
+          ? `Your submitted post was rejected: ${payload.reason}`
+          : 'Your submitted post did not meet our verification criteria.',
+        type: 'error',
+      });
+    } catch (_e) {
+      // ignore
+    }
+  });
 }
 
 module.exports = {
