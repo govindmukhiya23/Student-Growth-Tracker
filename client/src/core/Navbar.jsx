@@ -55,7 +55,19 @@ export default function Navbar() {
                     to="/admin/registrations"
                     className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
                   >
-                    User Approvals
+                    Approvals
+                  </Link>
+                  <Link
+                    to="/admin/reports"
+                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                  >
+                    Reports
+                  </Link>
+                  <Link
+                    to="/admin/settings"
+                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                  >
+                    Settings
                   </Link>
                 </>
               ) : (user.status === 'approved' || user.status === 'active') ? (

@@ -23,8 +23,8 @@ const features = [
   require('./streaks'),
   require('./leaderboard'),
   require('./dashboard'),
-  // Phase 4: require('./reports'),
-  // Phase 4: require('./settings'),
+  require('./reports'),
+  require('./settings'),
 ];
 
 module.exports = features;
