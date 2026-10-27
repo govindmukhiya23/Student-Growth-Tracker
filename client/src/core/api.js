@@ -97,7 +97,12 @@ async function apiFetch(path, options = {}) {
   try {
     data = JSON.parse(text);
   } catch {
-    data = { message: text };
+    const isHtml = text.trim().startsWith('<') || text.includes('<!DOCTYPE');
+    data = {
+      message: isHtml
+        ? 'Backend service is starting up or unreachable. Please try again in a few moments.'
+        : text,
+    };
   }
 
   if (!response.ok) {
