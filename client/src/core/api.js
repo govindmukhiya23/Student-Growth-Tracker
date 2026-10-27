@@ -8,7 +8,8 @@
  * - If refresh fails, we clear the in-memory token and redirect to /login.
  */
 
-const BASE_URL = '/api/v1';
+const API_HOST = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const BASE_URL = API_HOST ? `${API_HOST}/api/v1` : '/api/v1';
 
 let accessToken = null;
 let isRefreshing = false;
