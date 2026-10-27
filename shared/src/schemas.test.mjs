@@ -19,10 +19,11 @@ describe('Shared Schemas', () => {
         password: 'Password123!',
         college: 'Engineering College',
         course: 'Computer Science',
-        year: 2,
+        rollNumber: '21B91A0501',
       };
       const result = registerSchema.safeParse(validStudent);
       expect(result.success).toBe(true);
+      expect(result.data.rollNumber).toBe('21B91A0501');
     });
 
     it('rejects short password or invalid email', () => {

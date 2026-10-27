@@ -63,6 +63,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    rollNumber: {
+      type: String,
+      trim: true,
+      default: '',
+      maxlength: 50,
+    },
     year: {
       type: Number,
       min: 1,

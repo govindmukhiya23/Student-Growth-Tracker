@@ -148,7 +148,7 @@ export default function AdminRegistrationsPage() {
                 <tr>
                   <th className="px-6 py-4">Student</th>
                   <th className="px-6 py-4">College & Course</th>
-                  <th className="px-6 py-4">Year</th>
+                  <th className="px-6 py-4">Student ID / Roll No</th>
                   <th className="px-6 py-4">Registered</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4 text-right">Actions</th>
@@ -169,7 +169,7 @@ export default function AdminRegistrationsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className="inline-flex items-center rounded-md bg-slate-800 px-2 py-1 text-[11px] font-semibold text-slate-300">
-                        Yr {st.year}
+                        {st.rollNumber || (st.year ? `Yr ${st.year}` : '—')}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-slate-400">

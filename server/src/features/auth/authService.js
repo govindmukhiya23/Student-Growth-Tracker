@@ -100,7 +100,8 @@ async function register(userData, req) {
     status: 'pending',
     college: userData.college.trim(),
     course: userData.course.trim(),
-    year: userData.year,
+    rollNumber: (userData.rollNumber || '').trim(),
+    year: userData.year || 1,
   });
 
   events.emit('user.registered', {

@@ -13,7 +13,7 @@ export default function RegisterPage() {
     password: '',
     college: '',
     course: '',
-    year: 1,
+    rollNumber: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function RegisterPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'year' ? parseInt(value, 10) : value,
+      [name]: value,
     }));
   };
 
@@ -177,20 +177,17 @@ export default function RegisterPage() {
 
             <div className="sm:col-span-1">
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Current Year
+                Student ID / Roll No
               </label>
-              <select
-                name="year"
-                value={formData.year}
+              <input
+                type="text"
+                name="rollNumber"
+                required
+                value={formData.rollNumber}
                 onChange={handleChange}
-                className="w-full rounded-xl bg-slate-900/80 border border-slate-700/80 px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
-              >
-                {[1, 2, 3, 4, 5, 6].map((yr) => (
-                  <option key={yr} value={yr}>
-                    Year {yr}
-                  </option>
-                ))}
-              </select>
+                placeholder="e.g. 21B91A0501"
+                className="w-full rounded-xl bg-slate-900/80 border border-slate-700/80 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
+              />
             </div>
           </div>
 

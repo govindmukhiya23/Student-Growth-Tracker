@@ -32,11 +32,19 @@ const registerSchema = z.object({
     .max(128, 'Password must be at most 128 characters'),
   college: z.string().trim().min(1, 'College is required'),
   course: z.string().trim().min(1, 'Course is required'),
+  rollNumber: z
+    .string()
+    .trim()
+    .max(50, 'Student ID / Roll No must be at most 50 characters')
+    .optional()
+    .default(''),
   year: z.coerce
     .number()
     .int()
-    .min(1, 'Year must be between 1 and 6')
-    .max(6, 'Year must be between 1 and 6'),
+    .min(1)
+    .max(6)
+    .optional()
+    .default(1),
 });
 
 const loginSchema = z.object({
