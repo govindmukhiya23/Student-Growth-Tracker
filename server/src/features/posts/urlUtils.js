@@ -5,6 +5,7 @@ const net = require('node:net');
 const crypto = require('node:crypto');
 
 const LINKEDIN_HOSTNAMES = new Set(['linkedin.com', 'www.linkedin.com']);
+const SHORT_HOSTNAMES = new Set(['lnkd.in']);
 
 /**
  * Checks whether an IP address belongs to private/internal ranges (SSRF protection).
@@ -44,7 +45,7 @@ function isPrivateIp(ip) {
  * Normalizes a LinkedIn post URL and extracts the canonical post ID.
  * Returns { normalizedUrl, linkedinPostId, originalUrl }
  */
-function normalizeLinkedInUrl(rawUrl) {
+function normalizeLinkedInUrl(rawUrl, originalUrl) {
   let parsed;
   try {
     parsed = new URL(rawUrl.trim());
@@ -65,14 +66,13 @@ function normalizeLinkedInUrl(rawUrl) {
 
   const pathname = parsed.pathname.replace(/\/+$/, ''); // strip trailing slashes
 
-  // Pattern A: /posts/<slug>-activity-<activityId>-<hash>
-  // Pattern B: /feed/update/urn:li:activity:<activityId>
-  // Pattern C: /feed/update/urn:li:share:<shareId>
+  // Pattern A: /posts/<slug>-(activity|share)-<id>-<hash>
+  // Pattern B: /feed/update/urn:li:(activity|share):<id>
   let linkedinPostId = null;
 
-  const activityMatch = pathname.match(/activity-([0-9]{15,25})/i);
-  if (activityMatch) {
-    linkedinPostId = `urn:li:activity:${activityMatch[1]}`;
+  const postMatch = pathname.match(/(activity|share)-([0-9]{15,25})/i);
+  if (postMatch) {
+    linkedinPostId = `urn:li:${postMatch[1].toLowerCase()}:${postMatch[2]}`;
   } else {
     const urnMatch = pathname.match(/urn:li:(activity|share):([0-9]{15,25})/i);
     if (urnMatch) {
@@ -93,8 +93,80 @@ function normalizeLinkedInUrl(rawUrl) {
   return {
     normalizedUrl,
     linkedinPostId,
-    originalUrl: rawUrl.trim(),
+    originalUrl: (originalUrl || rawUrl).trim(),
   };
+}
+
+/**
+ * Resolves a shortened LinkedIn URL (e.g. lnkd.in/...) to its target URL.
+ * Validates DNS (SSRF protection) and limits redirects.
+ */
+async function resolveShortUrl(rawUrl, maxRedirects = 3) {
+  let currentUrl = (rawUrl || '').trim();
+
+  for (let i = 0; i < maxRedirects; i++) {
+    let parsed;
+    try {
+      parsed = new URL(currentUrl);
+    } catch (_e) {
+      throw new Error('Invalid URL format.');
+    }
+
+    if (parsed.protocol !== 'https:') {
+      throw new Error('URL must use https protocol.');
+    }
+
+    const hostname = parsed.hostname.toLowerCase();
+    if (!SHORT_HOSTNAMES.has(hostname)) {
+      return currentUrl;
+    }
+
+    await validateDns(hostname);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    let res;
+    try {
+      res = await fetch(currentUrl, {
+        method: 'HEAD',
+        redirect: 'manual',
+        signal: controller.signal,
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        },
+      });
+      if (res.status === 405) {
+        res = await fetch(currentUrl, {
+          method: 'GET',
+          redirect: 'manual',
+          signal: controller.signal,
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          },
+        });
+      }
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    const location = res.headers.get('location');
+    if (!location || res.status < 300 || res.status >= 400) {
+      break;
+    }
+
+    const nextUrl = new URL(location, currentUrl);
+    const nextHostname = nextUrl.hostname.toLowerCase();
+    if (!LINKEDIN_HOSTNAMES.has(nextHostname) && !SHORT_HOSTNAMES.has(nextHostname)) {
+      throw new Error('Shortened URL redirects to an unsupported domain.');
+    }
+
+    currentUrl = nextUrl.toString();
+  }
+
+  return currentUrl;
 }
 
 /**
@@ -128,6 +200,9 @@ function hashText(text) {
 module.exports = {
   isPrivateIp,
   normalizeLinkedInUrl,
+  resolveShortUrl,
   validateDns,
   hashText,
+  LINKEDIN_HOSTNAMES,
+  SHORT_HOSTNAMES,
 };

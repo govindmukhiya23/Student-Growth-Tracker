@@ -140,9 +140,21 @@ export default function MyPostsPage() {
                   </div>
                 )}
 
+                {/* Post Preview Image */}
+                {post.extractedData?.ogImage && (
+                  <div className="mb-3 overflow-hidden rounded-xl border border-slate-700/60 bg-slate-900/50">
+                    <img
+                      src={post.extractedData.ogImage}
+                      alt="Post preview"
+                      className="w-full h-44 object-cover"
+                      loading="lazy"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  </div>
+                )}
+
                 <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-4">
-                  {post.extractedData?.textSnippet ||
-                    'Metadata extraction in progress. Awaiting administrator verification.'}
+                  {post.extractedData?.textSnippet || 'Loading post preview...'}
                 </p>
 
                 {/* Rejection Note */}

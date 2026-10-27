@@ -32,6 +32,14 @@ describe('Phase 2 — LinkedIn Posts & URL Handling', () => {
       expect(result.normalizedUrl).toBe('https://www.linkedin.com/feed/update/urn:li:activity:7123456789012345678');
     });
 
+    it('normalizes share slug URLs and strips tracking query parameters', () => {
+      const raw = 'https://www.linkedin.com/posts/alex_share-7123456789012345678-abcd?utm_source=share';
+      const result = normalizeLinkedInUrl(raw);
+
+      expect(result.linkedinPostId).toBe('urn:li:share:7123456789012345678');
+      expect(result.normalizedUrl).toBe('https://www.linkedin.com/feed/update/urn:li:share:7123456789012345678');
+    });
+
     it('normalizes urn:li:share feed update URLs', () => {
       const raw = 'https://linkedin.com/feed/update/urn:li:share:7123456789012345678/?rcm=ACoAA';
       const result = normalizeLinkedInUrl(raw);

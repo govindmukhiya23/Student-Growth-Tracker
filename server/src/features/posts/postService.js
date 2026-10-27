@@ -2,7 +2,7 @@
 
 const Post = require('./Post');
 const MetricSnapshot = require('./MetricSnapshot');
-const { normalizeLinkedInUrl, validateDns, hashText } = require('./urlUtils');
+const { normalizeLinkedInUrl, resolveShortUrl, validateDns, hashText } = require('./urlUtils');
 const events = require('../../core/events');
 
 function formatIstDate(date) {
@@ -26,7 +26,23 @@ function formatIstDate(date) {
  * Submits and validates a LinkedIn post URL.
  */
 async function submitPost(student, rawUrl) {
-  const { normalizedUrl, linkedinPostId, originalUrl } = normalizeLinkedInUrl(rawUrl);
+  const trimmed = (rawUrl || '').trim();
+  let targetUrl = trimmed;
+
+  let parsed;
+  try {
+    parsed = new URL(trimmed);
+  } catch (_e) {
+    const err = new Error('Invalid URL format.');
+    err.status = 400;
+    throw err;
+  }
+
+  if (parsed.hostname.toLowerCase() === 'lnkd.in') {
+    targetUrl = await resolveShortUrl(trimmed);
+  }
+
+  const { normalizedUrl, linkedinPostId, originalUrl } = normalizeLinkedInUrl(targetUrl, trimmed);
 
   // SSRF DNS check
   const urlObj = new URL(normalizedUrl);
@@ -59,7 +75,12 @@ async function submitPost(student, rawUrl) {
       originalUrl,
       normalizedUrl,
       linkedinPostId,
-      status: 'pending',
+      status: 'verified',
+      review: {
+        reviewedAt: new Date(),
+        action: 'verify',
+        note: 'Auto-approved on submission',
+      },
     });
   } catch (dbErr) {
     if (dbErr.code === 11000) {
@@ -83,6 +104,14 @@ async function submitPost(student, rawUrl) {
     normalizedUrl,
   });
 
+  events.emit('post.verified', {
+    postId: post._id,
+    studentId: student._id,
+    adminId: null,
+    publishedAt: post.createdAt,
+    previousStatus: 'pending',
+  });
+
   return post;
 }
 
@@ -91,7 +120,7 @@ async function submitPost(student, rawUrl) {
  */
 async function extractPostMetadata(postId) {
   const post = await Post.findById(postId);
-  if (!post || post.status === 'verified' || post.status === 'rejected') return;
+  if (!post || post.status === 'rejected') return;
 
   try {
     const controller = new AbortController();
@@ -108,7 +137,6 @@ async function extractPostMetadata(postId) {
 
     if (!res.ok) {
       post.extractedData.extractionStatus = 'missing_fields';
-      post.status = 'needs_review';
       await post.save();
       return;
     }
@@ -118,7 +146,7 @@ async function extractPostMetadata(postId) {
     const getMeta = prop => {
       const match = html.match(new RegExp(`<meta\\s+property=["']${prop}["']\\s+content=["']([^"']*)["']`, 'i')) ||
                     html.match(new RegExp(`<meta\\s+content=["']([^"']*)["']\\s+property=["']${prop}["']`, 'i'));
-      return match ? match[1] : null;
+      return match ? match[1].replace(/&amp;/g, '&').trim() : null;
     };
 
     const title = getMeta('og:title') || '';
@@ -157,24 +185,21 @@ async function extractPostMetadata(postId) {
           postId: post._id,
           studentId: post.studentId,
           reason: 'Duplicate text fingerprint matches an earlier submission.',
+          previousStatus: 'verified',
         });
         return;
       }
     }
 
-    // If author is missing or content is very short, flag as needs_review
     if (!author || (!description && !title)) {
       post.extractedData.extractionStatus = 'missing_fields';
-      post.status = 'needs_review';
     } else {
       post.extractedData.extractionStatus = 'success';
-      // Post stays pending for admin verification
     }
 
     await post.save();
   } catch (_err) {
     post.extractedData.extractionStatus = 'failed';
-    post.status = 'needs_review';
     await post.save();
   }
 }

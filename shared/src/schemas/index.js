@@ -47,7 +47,7 @@ const loginSchema = z.object({
 // ── Post schemas ──────────────────────────────────────────────────────────────
 
 const LINKEDIN_URL_PATTERN =
-  /^https:\/\/(www\.)?linkedin\.com\/(posts\/[^/?#]+|feed\/update\/urn:li:[^/?#]+)/i;
+  /^https:\/\/(?:(www\.)?linkedin\.com\/(posts\/[^/?#]+|feed\/update\/urn:li:[^/?#]+)|lnkd\.in\/[^/?#\s]+)/i;
 
 const submitPostSchema = z.object({
   url: z
@@ -58,7 +58,7 @@ const submitPostSchema = z.object({
     .refine(u => u.startsWith('https://'), 'URL must use HTTPS')
     .refine(
       u => LINKEDIN_URL_PATTERN.test(u),
-      'URL must be a LinkedIn post URL (linkedin.com/posts/… or linkedin.com/feed/update/…)'
+      'URL must be a LinkedIn post URL (linkedin.com/posts/…, linkedin.com/feed/update/…, or lnkd.in/…)'
     ),
 });
 

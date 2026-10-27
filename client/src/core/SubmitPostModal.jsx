@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from './api';
 
 const LINKEDIN_URL_PATTERN =
-  /^https:\/\/(www\.)?linkedin\.com\/(posts\/[^/?#]+|feed\/update\/urn:li:[^/?#]+)/i;
+  /^https:\/\/(?:(www\.)?linkedin\.com\/(posts\/[^/?#]+|feed\/update\/urn:li:[^/?#]+)|lnkd\.in\/[^/?#\s]+)/i;
 
 export default function SubmitPostModal({ isOpen, onClose }) {
   const queryClient = useQueryClient();
@@ -34,7 +34,7 @@ export default function SubmitPostModal({ isOpen, onClose }) {
 
     if (val.trim() && !LINKEDIN_URL_PATTERN.test(val.trim())) {
       setClientError(
-        'Please enter a valid LinkedIn post URL (e.g. https://www.linkedin.com/posts/… or /feed/update/…)'
+        'Please enter a valid LinkedIn post URL (e.g. https://www.linkedin.com/posts/… or https://lnkd.in/…)'
       );
     } else {
       setClientError(null);
@@ -100,7 +100,7 @@ export default function SubmitPostModal({ isOpen, onClose }) {
               required
               value={url}
               onChange={handleUrlChange}
-              placeholder="https://www.linkedin.com/posts/username_slug-activity-1234567890123456789"
+              placeholder="https://www.linkedin.com/posts/... or https://lnkd.in/..."
               className="w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
             <p className="mt-1 text-[11px] text-slate-400">

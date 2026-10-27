@@ -1,8 +1,9 @@
 'use strict';
 
-// Load .env only outside production — NEVER in production (use hosting provider env vars)
+const path = require('node:path');
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+  require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
+  require('dotenv').config({ path: path.resolve(__dirname, '../../../../.env') });
 }
 
 const { z } = require('zod');

@@ -141,26 +141,36 @@ export default function StudentDashboardPage() {
           <div className="divide-y divide-slate-800/80">
             {recentPosts.map((post) => (
               <div key={post._id} className="py-3.5 flex items-center justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
-                        post.status === 'verified'
-                          ? 'bg-emerald-500/20 text-emerald-300'
-                          : post.status === 'pending'
-                          ? 'bg-amber-500/20 text-amber-300'
-                          : 'bg-rose-500/20 text-rose-300'
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-                    <span className="text-[11px] text-slate-400 truncate">
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </span>
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  {post.extractedData?.ogImage && (
+                    <img
+                      src={post.extractedData.ogImage}
+                      alt="Thumbnail"
+                      className="w-12 h-12 rounded-lg object-cover border border-slate-700/60 shrink-0"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
+                          post.status === 'verified'
+                            ? 'bg-emerald-500/20 text-emerald-300'
+                            : post.status === 'pending'
+                            ? 'bg-amber-500/20 text-amber-300'
+                            : 'bg-rose-500/20 text-rose-300'
+                        }`}
+                      >
+                        {post.status}
+                      </span>
+                      <span className="text-[11px] text-slate-400 truncate">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 truncate">
+                      {post.extractedData?.textSnippet || post.originalUrl}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-300 truncate">
-                    {post.extractedData?.textSnippet || post.originalUrl}
-                  </p>
                 </div>
 
                 <a

@@ -176,6 +176,19 @@ export default function AdminVerificationQueuePage() {
                   </span>
                 </div>
 
+                {/* Post Preview Image */}
+                {post.extractedData?.ogImage && (
+                  <div className="mb-3 overflow-hidden rounded-xl border border-slate-700/60 bg-slate-900/50 max-w-sm">
+                    <img
+                      src={post.extractedData.ogImage}
+                      alt="Post preview"
+                      className="w-full h-36 object-cover"
+                      loading="lazy"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  </div>
+                )}
+
                 {/* Snippet / Description */}
                 <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed mb-3">
                   {post.extractedData?.textSnippet || 'No snippet preview available.'}

@@ -47,6 +47,12 @@ describe('Shared Schemas', () => {
       expect(result.success).toBe(true);
     });
 
+    it('accepts valid lnkd.in shortened URLs', () => {
+      const validUrl = 'https://lnkd.in/p/d2V33N_Z';
+      const result = submitPostSchema.safeParse({ url: validUrl });
+      expect(result.success).toBe(true);
+    });
+
     it('rejects non-linkedin URLs', () => {
       const invalidUrl = 'https://malicious-site.com/fake-post';
       const result = submitPostSchema.safeParse({ url: invalidUrl });
