@@ -35,9 +35,8 @@ const registerSchema = z.object({
   rollNumber: z
     .string()
     .trim()
-    .max(50, 'Student ID / Roll No must be at most 50 characters')
-    .optional()
-    .default(''),
+    .min(1, 'Student ID / Roll No is required')
+    .max(50, 'Student ID / Roll No must be at most 50 characters'),
   year: z.preprocess(
     val =>
       val === undefined || val === null || val === '' || Number.isNaN(Number(val))

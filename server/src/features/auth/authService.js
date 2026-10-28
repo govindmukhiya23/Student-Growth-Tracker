@@ -72,37 +72,67 @@ async function createSession(userId, req, familyId = null) {
 async function register(userData, req) {
   const normalizedEmail = userData.email.trim().toLowerCase();
   const normalizedUsername = userData.username.trim().toLowerCase();
+  const normalizedRoll = userData.rollNumber ? userData.rollNumber.trim().toUpperCase() : null;
 
-  // Check existence
-  const existing = await User.findOne({
-    $or: [{ email: normalizedEmail }, { username: normalizedUsername }],
-  });
+  // Enforce single account per student across email, username, and roll number
+  const duplicateConditions = [
+    { email: normalizedEmail },
+    { username: normalizedUsername },
+  ];
+  if (normalizedRoll) {
+    duplicateConditions.push({ rollNumber: normalizedRoll });
+  }
+
+  const existing = await User.findOne({ $or: duplicateConditions });
 
   if (existing) {
-    // SECURITY.md §3.4: Account enumeration protection
-    // Generic response message to avoid leaking user presence
-    return {
-      success: true,
-      message: 'Registration received. If your details are valid, your account will be reviewed by an administrator.',
-    };
+    let duplicateField = 'Email address';
+    if (existing.email === normalizedEmail) {
+      duplicateField = 'Email address';
+    } else if (existing.username === normalizedUsername) {
+      duplicateField = 'Username';
+    } else if (normalizedRoll && existing.rollNumber === normalizedRoll) {
+      duplicateField = 'Student ID / Roll No';
+    }
+    const err = new Error(
+      `An account with this ${duplicateField} already exists. Each student can only create one account.`
+    );
+    err.status = 409;
+    throw err;
   }
 
   const passwordHash = await argon2.hash(hashWithPepper(userData.password), {
     type: argon2.argon2id,
   });
 
-  const user = await User.create({
-    name: userData.name.trim(),
-    email: normalizedEmail,
-    username: normalizedUsername,
-    passwordHash,
-    role: 'student',
-    status: 'pending',
-    college: userData.college.trim(),
-    course: userData.course.trim(),
-    rollNumber: (userData.rollNumber || '').trim(),
-    year: userData.year || 1,
-  });
+  let user;
+  try {
+    user = await User.create({
+      name: userData.name.trim(),
+      email: normalizedEmail,
+      username: normalizedUsername,
+      passwordHash,
+      role: 'student',
+      status: 'pending',
+      college: userData.college.trim(),
+      course: userData.course.trim(),
+      rollNumber: normalizedRoll || undefined,
+      year: userData.year || 1,
+    });
+  } catch (err) {
+    if (err.code === 11000) {
+      let duplicateField = 'details';
+      if (err.keyPattern?.email) duplicateField = 'Email address';
+      else if (err.keyPattern?.username) duplicateField = 'Username';
+      else if (err.keyPattern?.rollNumber) duplicateField = 'Student ID / Roll No';
+      const duplicateErr = new Error(
+        `An account with this ${duplicateField} already exists. Each student can only create one account.`
+      );
+      duplicateErr.status = 409;
+      throw duplicateErr;
+    }
+    throw err;
+  }
 
   events.emit('user.registered', {
     userId: user._id,

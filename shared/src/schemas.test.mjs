@@ -26,17 +26,16 @@ describe('Shared Schemas', () => {
       expect(result.data.rollNumber).toBe('21B91A0501');
     });
 
-    it('rejects short password or invalid email', () => {
-      const invalid = {
-        name: 'Jane',
-        email: 'not-an-email',
-        username: 'jd',
-        password: '123',
-        college: 'EC',
-        course: 'CS',
-        year: 2,
+    it('rejects payload missing rollNumber', () => {
+      const missingRoll = {
+        name: 'Jane Doe',
+        email: 'jane@college.edu',
+        username: 'janedoe',
+        password: 'Password123!',
+        college: 'Engineering College',
+        course: 'Computer Science',
       };
-      const result = registerSchema.safeParse(invalid);
+      const result = registerSchema.safeParse(missingRoll);
       expect(result.success).toBe(false);
     });
   });
