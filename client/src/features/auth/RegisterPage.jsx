@@ -14,6 +14,7 @@ export default function RegisterPage() {
     college: '',
     course: '',
     rollNumber: '',
+    year: 1,
   });
 
   const [loading, setLoading] = useState(false);

@@ -38,13 +38,13 @@ const registerSchema = z.object({
     .max(50, 'Student ID / Roll No must be at most 50 characters')
     .optional()
     .default(''),
-  year: z.coerce
-    .number()
-    .int()
-    .min(1)
-    .max(6)
-    .optional()
-    .default(1),
+  year: z.preprocess(
+    val =>
+      val === undefined || val === null || val === '' || Number.isNaN(Number(val))
+        ? 1
+        : Number(val),
+    z.number().int().min(1).max(6).default(1)
+  ),
 });
 
 const loginSchema = z.object({
