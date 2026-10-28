@@ -65,15 +65,35 @@ router.get('/users', validate(paginationSchema, 'query'), async (req, res, next)
     }
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-      query.$or = [{ name: searchRegex }, { email: searchRegex }, { username: searchRegex }];
+      query.$or = [
+        { name: searchRegex },
+        { email: searchRegex },
+        { username: searchRegex },
+        { rollNumber: searchRegex },
+        { college: searchRegex },
+        { course: searchRegex },
+      ];
     }
 
-    const [users, total] = await Promise.all([
+    const [users, total, stats] = await Promise.all([
       User.find(query)
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit),
       User.countDocuments(query),
+      Promise.all([
+        User.countDocuments({ role: 'student' }),
+        User.countDocuments({ role: 'student', status: { $in: ['approved', 'active'] } }),
+        User.countDocuments({ role: 'student', status: 'pending' }),
+        User.countDocuments({ role: 'student', status: 'suspended' }),
+        User.countDocuments({ role: 'student', status: 'rejected' }),
+      ]).then(([totalStudents, approved, pending, suspended, rejected]) => ({
+        totalStudents,
+        approved,
+        pending,
+        suspended,
+        rejected,
+      })),
     ]);
 
     res.json({
@@ -84,6 +104,7 @@ router.get('/users', validate(paginationSchema, 'query'), async (req, res, next)
         limit,
         pages: Math.ceil(total / limit) || 1,
       },
+      stats,
     });
   } catch (err) {
     next(err);

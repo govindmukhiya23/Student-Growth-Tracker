@@ -9,17 +9,21 @@ export default function AdminRegistrationsPage() {
   const [rejectModalUser, setRejectModalUser] = useState(null);
   const [rejectReason, setRejectReason] = useState('');
 
-  // Fetch pending registrations
+  // Fetch pending registrations with real-time background polling
   const { data: pendingData, isLoading: loadingPending } = useQuery({
     queryKey: ['admin-registrations'],
-    queryFn: () => api.get('/admin/registrations?limit=50'),
+    queryFn: () => api.get('/admin/registrations?limit=100'),
+    refetchInterval: 3000,
+    refetchIntervalInBackground: true,
   });
 
-  // Fetch all users
+  // Fetch all users with real-time background polling
   const { data: allUsersData, isLoading: loadingAll } = useQuery({
     queryKey: ['admin-all-users', search],
-    queryFn: () => api.get(`/admin/users?limit=50${search ? `&search=${encodeURIComponent(search)}` : ''}`),
+    queryFn: () => api.get(`/admin/users?limit=100${search ? `&search=${encodeURIComponent(search)}` : ''}`),
     enabled: activeTab === 'all',
+    refetchInterval: 3000,
+    refetchIntervalInBackground: true,
   });
 
   // Mutation for updating status
@@ -29,6 +33,7 @@ export default function AdminRegistrationsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['admin-all-users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-students'] });
       setRejectModalUser(null);
       setRejectReason('');
     },
@@ -72,10 +77,14 @@ export default function AdminRegistrationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold tracking-tight text-white">Student Approvals & Management</h1>
             <span className="rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold text-indigo-300 border border-indigo-500/30">
               Admin Control
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live Sync (Realtime)
             </span>
           </div>
           <p className="mt-1 text-sm text-slate-400">

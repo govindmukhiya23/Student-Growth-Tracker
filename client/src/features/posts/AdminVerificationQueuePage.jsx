@@ -14,6 +14,8 @@ export default function AdminVerificationQueuePage() {
     queryKey: ['admin-posts-queue', statusFilter],
     queryFn: () =>
       api.get(`/admin/posts?limit=50${statusFilter ? `&status=${statusFilter}` : ''}`),
+    refetchInterval: 3000,
+    refetchIntervalInBackground: true,
   });
 
   // Review mutation (verify or reject)

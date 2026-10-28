@@ -21,7 +21,7 @@ export default function LoginPage() {
       const user = res.user;
 
       if (user.role === 'admin') {
-        navigate('/admin/registrations');
+        navigate('/admin/students');
       } else if (user.status === 'pending') {
         navigate('/pending');
       } else if (user.status === 'rejected') {

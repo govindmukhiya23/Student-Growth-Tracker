@@ -1,9 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
 
 export default function Navbar() {
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     await logout();
@@ -45,27 +46,53 @@ export default function Navbar() {
               {isAdmin ? (
                 <>
                   <Link
+                    to="/admin/students"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                      location.pathname === '/admin/students' || location.pathname === '/admin'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white border border-slate-700/80'
+                    }`}
+                  >
+                    <span>👨‍🎓 Students</span>
+                  </Link>
+                  <Link
+                    to="/admin/registrations"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                      location.pathname === '/admin/registrations'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white border border-slate-700/80'
+                    }`}
+                  >
+                    Approvals
+                  </Link>
+                  <Link
                     to="/admin/posts"
-                    className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-colors border border-indigo-500/30 flex items-center gap-1.5"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                      location.pathname === '/admin/posts'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                        : 'bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600/30 border border-indigo-500/30'
+                    }`}
                   >
                     <span className="h-2 w-2 rounded-full bg-cyan-400"></span>
                     Post Queue
                   </Link>
                   <Link
-                    to="/admin/registrations"
-                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
-                  >
-                    Approvals
-                  </Link>
-                  <Link
                     to="/admin/reports"
-                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                      location.pathname === '/admin/reports'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white border border-slate-700/80'
+                    }`}
                   >
                     Reports
                   </Link>
                   <Link
                     to="/admin/settings"
-                    className="rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700/80 transition-colors border border-slate-700/80 flex items-center gap-1.5"
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                      location.pathname === '/admin/settings'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white border border-slate-700/80'
+                    }`}
                   >
                     Settings
                   </Link>

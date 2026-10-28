@@ -25,7 +25,7 @@ function ProtectedRoute({ element, roles, isPublic }) {
   if (isPublic) {
     // If logged in and attempting to visit login/register, redirect accordingly
     if (isAuthenticated) {
-      if (user.role === 'admin') return <Navigate to="/admin/registrations" replace />;
+      if (user.role === 'admin') return <Navigate to="/admin/students" replace />;
       if (user.status === 'pending') return <Navigate to="/pending" replace />;
       if (user.status === 'rejected') return <Navigate to="/rejected" replace />;
       return <Navigate to="/" replace />;

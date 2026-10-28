@@ -36,12 +36,20 @@ export default function HomePage() {
                 </Link>
               </>
             ) : isAdmin ? (
-              <Link
-                to="/admin/registrations"
-                className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all flex items-center gap-2"
-              >
-                Open Admin Review Queue →
-              </Link>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  to="/admin/students"
+                  className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all flex items-center gap-2"
+                >
+                  👨‍🎓 Manage Students Directory →
+                </Link>
+                <Link
+                  to="/admin/registrations"
+                  className="rounded-xl glass-panel border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all"
+                >
+                  Review Approvals
+                </Link>
+              </div>
             ) : user?.status === 'pending' ? (
               <Link
                 to="/pending"
