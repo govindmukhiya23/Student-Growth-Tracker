@@ -26,30 +26,42 @@ async function seed() {
   console.info('✅  MongoDB connected');
 
   const normalizedEmail = env.ADMIN_SEED_EMAIL.trim().toLowerCase();
-  const normalizedUsername = env.ADMIN_SEED_USERNAME.trim().toLowerCase();
+  const normalizedUsername = (env.ADMIN_SEED_USERNAME || 'admin').trim().toLowerCase();
+  const adminName = env.ADMIN_SEED_NAME || 'System Administrator';
 
-  const existingAdmin = await User.findOne({
-    $or: [{ email: normalizedEmail }, { username: normalizedUsername }],
+  const passwordWithPepper = env.ADMIN_SEED_PASSWORD + (env.PASSWORD_PEPPER || '');
+  const passwordHash = await argon2.hash(passwordWithPepper, {
+    type: argon2.argon2id,
   });
 
-  if (existingAdmin) {
-    console.info(`ℹ️   Admin user already exists: ${existingAdmin.email} (${existingAdmin.username})`);
-  } else {
-    const passwordWithPepper = env.ADMIN_SEED_PASSWORD + (env.PASSWORD_PEPPER || '');
-    const passwordHash = await argon2.hash(passwordWithPepper, {
-      type: argon2.argon2id,
-    });
+  // Check if an admin exists by email, username, or role
+  let admin = await User.findOne({
+    $or: [{ email: normalizedEmail }, { username: normalizedUsername }, { role: 'admin' }],
+  });
 
-    const admin = await User.create({
-      name: 'System Administrator',
+  if (admin) {
+    admin.email = normalizedEmail;
+    admin.username = normalizedUsername;
+    admin.name = adminName;
+    admin.passwordHash = passwordHash;
+    admin.role = 'admin';
+    admin.status = 'active';
+    await admin.save();
+    console.info(`✅  Admin user updated successfully with new credentials:`);
+    console.info(`    Username: ${admin.username}`);
+    console.info(`    Email:    ${admin.email}`);
+  } else {
+    admin = await User.create({
+      name: adminName,
       email: normalizedEmail,
       username: normalizedUsername,
       passwordHash,
       role: 'admin',
       status: 'active',
     });
-
-    console.info(`✅  Admin user created successfully: ${admin.email} (${admin.username})`);
+    console.info(`✅  Admin user created successfully:`);
+    console.info(`    Username: ${admin.username}`);
+    console.info(`    Email:    ${admin.email}`);
   }
 
   await mongoose.disconnect();

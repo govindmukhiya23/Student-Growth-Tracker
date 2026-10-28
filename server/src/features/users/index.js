@@ -8,10 +8,68 @@ const User = require('./User');
 const authService = require('../auth/authService');
 const events = require('../../core/events');
 
+const argon2 = require('argon2');
+const env = require('../../core/config/env');
+
 const router = Router();
 
 // All admin user routes require authentication and admin role
 router.use(authenticate, loadUser, requireRole('admin'));
+
+/**
+ * PATCH /api/v1/admin/account
+ * Update admin's own username and/or password
+ */
+router.patch('/account', async (req, res, next) => {
+  try {
+    const { username, currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id).select('+passwordHash');
+    if (!user) {
+      return res.status(404).json({ message: 'Admin account not found.' });
+    }
+
+    // Password change
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: 'Current password is required to set a new password.' });
+      }
+      if (newPassword.length < 10) {
+        return res.status(400).json({ message: 'New password must be at least 10 characters long.' });
+      }
+      const pepperedCurrent = currentPassword + (env.PASSWORD_PEPPER || '');
+      const valid = await argon2.verify(user.passwordHash, pepperedCurrent);
+      if (!valid) {
+        return res.status(401).json({ message: 'Current password is incorrect.' });
+      }
+      const pepperedNew = newPassword + (env.PASSWORD_PEPPER || '');
+      user.passwordHash = await argon2.hash(pepperedNew, {
+        type: argon2.argon2id,
+      });
+    }
+
+    // Username change
+    if (username && username.trim().toLowerCase() !== user.username) {
+      const normalizedUsername = username.trim().toLowerCase();
+      if (normalizedUsername.length < 3 || normalizedUsername.length > 30) {
+        return res.status(400).json({ message: 'Username must be between 3 and 30 characters.' });
+      }
+      const existing = await User.findOne({ username: normalizedUsername, _id: { $ne: user._id } });
+      if (existing) {
+        return res.status(409).json({ message: 'This username is already taken.' });
+      }
+      user.username = normalizedUsername;
+    }
+
+    await user.save();
+
+    res.json({
+      message: 'Admin account credentials updated successfully.',
+      user: user.toJSON(),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 /**
  * GET /api/v1/admin/registrations
