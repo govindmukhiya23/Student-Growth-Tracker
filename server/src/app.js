@@ -69,6 +69,17 @@ features.forEach(feature => {
   }
 });
 
+// ── Root landing route ────────────────────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    name: 'Student Growth Tracker API',
+    status: 'online',
+    version: '1.0.0',
+    health: '/api/v1/health',
+    frontend: env.CLIENT_ORIGIN || 'https://student-growth-tracker.netlify.app',
+  });
+});
+
 // ── 404 handler ───────────────────────────────────────────────────────────────
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found.' });
