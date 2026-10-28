@@ -44,15 +44,15 @@ export default function AdminReportsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold tracking-tight text-white">Student Growth Analytics & Reports</h1>
-          <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Student Growth Analytics & Reports</h1>
+          <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-emerald-400 border border-emerald-500/20">
             Export Engine
           </span>
         </div>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-xs sm:text-sm text-slate-400">
           Generate sanitized CSV reports of student participation, streaks, and verified post totals
         </p>
       </div>
@@ -64,7 +64,7 @@ export default function AdminReportsPage() {
       )}
 
       {/* Export Configuration Card */}
-      <div className="glass-card rounded-2xl p-6 border border-slate-800 shadow-xl mb-8">
+      <div className="glass-card rounded-2xl p-4 sm:p-6 border border-slate-800 shadow-xl mb-6 sm:mb-8">
         <h2 className="text-base font-bold text-white mb-4">Export Filters</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -99,14 +99,14 @@ export default function AdminReportsPage() {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+        <div className="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-xs text-slate-400">
             Output: <span className="text-white font-mono">.csv</span> with UTF-8 encoding
           </div>
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-500 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+            className="w-full sm:w-auto justify-center rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-500 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
           >
             {downloading ? 'Preparing CSV…' : '📥 Download CSV Report'}
           </button>

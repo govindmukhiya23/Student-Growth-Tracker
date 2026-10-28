@@ -5,47 +5,47 @@ export default function HomePage() {
   const { user, isAuthenticated, isAdmin } = useAuth();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-3xl glass-card border border-slate-800 p-8 sm:p-14 mb-10 glow-indigo">
+      <div className="relative overflow-hidden rounded-3xl glass-card border border-slate-800 p-6 sm:p-10 lg:p-14 mb-8 sm:mb-10 glow-indigo">
         <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400 border border-indigo-500/20 mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400 border border-indigo-500/20 mb-3 sm:mb-4">
             🚀 Campus Habit Accelerator
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
             Build your public presence. <span className="bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">One post at a time.</span>
           </h1>
-          <p className="mt-4 text-base text-slate-300 leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-300 leading-relaxed">
             Student Growth Tracker helps students build a daily habit of sharing professional milestones on LinkedIn. Get verified by college mentors, build streaks, and climb the campus leaderboard.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             {!isAuthenticated ? (
               <>
                 <Link
                   to="/register"
-                  className="rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all"
+                  className="w-full sm:w-auto text-center rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all"
                 >
                   Join Your College Cohort
                 </Link>
                 <Link
                   to="/login"
-                  className="rounded-xl glass-panel border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all"
+                  className="w-full sm:w-auto text-center rounded-xl glass-panel border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all"
                 >
                   Sign In
                 </Link>
               </>
             ) : isAdmin ? (
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                 <Link
                   to="/admin/students"
-                  className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all flex items-center gap-2"
+                  className="w-full sm:w-auto text-center rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-all flex items-center justify-center gap-2"
                 >
                   👨‍🎓 Manage Students Directory →
                 </Link>
                 <Link
                   to="/admin/registrations"
-                  className="rounded-xl glass-panel border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all"
+                  className="w-full sm:w-auto text-center rounded-xl glass-panel border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all"
                 >
                   Review Approvals
                 </Link>
@@ -53,7 +53,7 @@ export default function HomePage() {
             ) : user?.status === 'pending' ? (
               <Link
                 to="/pending"
-                className="rounded-xl bg-amber-600/20 border border-amber-500/30 px-6 py-3 text-sm font-semibold text-amber-300 hover:bg-amber-600/30 transition-all flex items-center gap-2"
+                className="w-full sm:w-auto text-center rounded-xl bg-amber-600/20 border border-amber-500/30 px-6 py-3 text-sm font-semibold text-amber-300 hover:bg-amber-600/30 transition-all flex items-center justify-center gap-2"
               >
                 View Pending Approval Status →
               </Link>

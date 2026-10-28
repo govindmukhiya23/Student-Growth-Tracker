@@ -73,29 +73,29 @@ export default function AdminStudentsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Registered Students</h1>
-            <span className="rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold text-indigo-300 border border-indigo-500/30">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Registered Students</h1>
+            <span className="rounded-full bg-indigo-500/20 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-indigo-300 border border-indigo-500/30">
               Admin Directory
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-400 border border-emerald-500/20">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live Realtime Sync
+              Live Sync
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-400">
             Comprehensive directory of all enrolled students, roll numbers, and account statuses
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link
             to="/admin/registrations"
-            className="rounded-xl bg-slate-900 border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:border-slate-700 transition-all flex items-center gap-2"
+            className="w-full sm:w-auto justify-center rounded-xl bg-slate-900 border border-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:border-slate-700 transition-all flex items-center gap-2"
           >
             <span>Review Pending Approvals</span>
             {stats.pending > 0 && (
@@ -108,53 +108,53 @@ export default function AdminStudentsPage() {
       </div>
 
       {/* KPI Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <div className="glass-card rounded-2xl p-5 border border-slate-800">
-          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800">
+          <div className="text-[11px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
             Total Students
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-white">
+          <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white">
             {stats.totalStudents ?? students.length}
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-emerald-500/20 bg-emerald-500/5">
-          <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
+        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-emerald-500/20 bg-emerald-500/5">
+          <div className="text-[11px] sm:text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
             Active / Approved
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-300">
+          <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-emerald-300">
             {stats.approved ?? 0}
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-amber-500/20 bg-amber-500/5">
-          <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
+        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/20 bg-amber-500/5">
+          <div className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
             Pending Review
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-amber-300">
+          <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-amber-300">
             {stats.pending ?? 0}
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-rose-500/20 bg-rose-500/5">
-          <div className="text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1">
+        <div className="glass-card rounded-2xl p-4 sm:p-5 border border-rose-500/20 bg-rose-500/5">
+          <div className="text-[11px] sm:text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1">
             Suspended
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-rose-300">
+          <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-rose-300">
             {stats.suspended ?? 0}
           </div>
         </div>
       </div>
 
       {/* Controls: Search & Status Filters */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6">
         <div className="relative w-full sm:max-w-md">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by student name, roll no, email, college…"
-            className="w-full rounded-xl bg-slate-900/80 border border-slate-700/80 px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
+            className="w-full rounded-xl bg-slate-900/80 border border-slate-700/80 px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
           />
           {search && (
             <button
@@ -167,7 +167,7 @@ export default function AdminStudentsPage() {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 rounded-xl bg-slate-900/90 p-1 border border-slate-800">
+        <div className="flex items-center gap-1.5 rounded-xl bg-slate-900/90 p-1 border border-slate-800 overflow-x-auto no-scrollbar max-w-full">
           {[
             { id: '', label: 'All Students' },
             { id: 'approved', label: 'Approved' },
@@ -178,7 +178,7 @@ export default function AdminStudentsPage() {
             <button
               key={f.id}
               onClick={() => setStatusFilter(f.id)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 statusFilter === f.id
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                   : 'text-slate-400 hover:text-white'
@@ -192,6 +192,10 @@ export default function AdminStudentsPage() {
 
       {/* Students Table */}
       <div className="overflow-hidden rounded-2xl glass-card border border-slate-800 shadow-xl">
+        <div className="block sm:hidden text-center text-[10px] text-slate-500 py-1.5 bg-slate-900/60 border-b border-slate-800">
+          ← Swipe horizontally to see all columns →
+        </div>
+
         {isLoading && students.length === 0 ? (
           <div className="flex h-64 items-center justify-center text-sm text-slate-400">
             <span className="animate-pulse">Loading registered students…</span>
@@ -211,16 +215,16 @@ export default function AdminStudentsPage() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="table-responsive-container">
+            <table className="w-full min-w-[680px] text-left text-xs text-slate-300">
               <thead className="bg-slate-900/80 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-800">
                 <tr>
-                  <th className="px-6 py-4">Student</th>
-                  <th className="px-6 py-4">Student ID / Roll No</th>
-                  <th className="px-6 py-4">College & Course</th>
-                  <th className="px-6 py-4">Registered Date</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
+                  <th className="px-4 sm:px-6 py-4">Student</th>
+                  <th className="px-4 sm:px-6 py-4">Student ID / Roll No</th>
+                  <th className="px-4 sm:px-6 py-4">College & Course</th>
+                  <th className="px-4 sm:px-6 py-4">Registered Date</th>
+                  <th className="px-4 sm:px-6 py-4">Status</th>
+                  <th className="px-4 sm:px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">

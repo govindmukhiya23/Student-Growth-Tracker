@@ -37,8 +37,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-4">
-      <div className="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-slate-800">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-3 sm:p-4">
+      <div className="w-full max-w-md glass-card rounded-2xl p-5 sm:p-8 shadow-2xl border border-slate-800">
         <div className="text-center mb-8">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-500 to-blue-600 text-white font-bold text-xl mb-3 shadow-lg shadow-indigo-500/30">
             GT

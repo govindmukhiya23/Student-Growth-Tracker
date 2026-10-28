@@ -56,3 +56,18 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3b82f6;
 }
+
+/* Hide scrollbar for clean horizontal tab bars on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Responsive table horizontal scroll helper */
+.table-responsive-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

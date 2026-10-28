@@ -79,36 +79,36 @@ export default function AdminVerificationQueuePage() {
   const queueCounts = data?.queueCounts || { total: 0, pending: 0, needsReview: 0 };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Post Verification Queue</h1>
-            <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Post Verification Queue</h1>
+            <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-indigo-400 border border-indigo-500/20">
               Admin Review
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-400">
             Verify submitted student LinkedIn posts to award daily streak credits and points
           </p>
         </div>
 
         {/* Counter Pills */}
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl glass-card px-4 py-2 border border-amber-500/30 text-xs">
+        <div className="flex items-center gap-2 sm:gap-3 self-start sm:self-auto">
+          <div className="rounded-xl glass-card px-3 sm:px-4 py-1.5 sm:py-2 border border-amber-500/30 text-xs">
             <span className="text-slate-400">Pending: </span>
             <span className="font-bold text-amber-300">{queueCounts.pending}</span>
           </div>
-          <div className="rounded-xl glass-card px-4 py-2 border border-cyan-500/30 text-xs">
+          <div className="rounded-xl glass-card px-3 sm:px-4 py-1.5 sm:py-2 border border-cyan-500/30 text-xs">
             <span className="text-slate-400">Needs Review: </span>
             <span className="font-bold text-cyan-300">{queueCounts.needsReview}</span>
           </div>
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3">
+      {/* Filter Tabs - Horizontal Scroll on Mobile without scrollbar */}
+      <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3 overflow-x-auto no-scrollbar max-w-full">
         {[
           { label: 'Pending Review', val: 'pending' },
           { label: 'Needs Review', val: 'needs_review' },
@@ -119,7 +119,7 @@ export default function AdminVerificationQueuePage() {
           <button
             key={tab.val}
             onClick={() => setStatusFilter(tab.val)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               statusFilter === tab.val
                 ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/30'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800/60'

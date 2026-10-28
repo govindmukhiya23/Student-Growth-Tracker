@@ -114,15 +114,15 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold tracking-tight text-white">Platform Settings & Scoring</h1>
-          <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Platform Settings & Scoring</h1>
+          <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-indigo-400 border border-indigo-500/20">
             System Config
           </span>
         </div>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-xs sm:text-sm text-slate-400">
           Configure point reward rates, campus timezone, and student approval policies
         </p>
       </div>
@@ -223,7 +223,7 @@ export default function AdminSettingsPage() {
           <button
             type="submit"
             disabled={isLoading || updateMutation.isPending}
-            className="rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all cursor-pointer disabled:opacity-50"
           >
             {updateMutation.isPending ? 'Saving Settings…' : 'Save Platform Settings'}
           </button>
@@ -329,7 +329,7 @@ export default function AdminSettingsPage() {
             <button
               type="submit"
               disabled={accountMutation.isPending}
-              className="rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full sm:w-auto justify-center rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all cursor-pointer disabled:opacity-50"
             >
               {accountMutation.isPending ? 'Updating Credentials…' : 'Update Admin Credentials'}
             </button>

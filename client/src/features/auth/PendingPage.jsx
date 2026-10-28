@@ -19,12 +19,12 @@ export default function PendingPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-4">
-      <div className="w-full max-w-md glass-card rounded-2xl p-8 text-center shadow-2xl border border-slate-800">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10 border border-amber-500/20 text-3xl mb-5">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-6 sm:py-10">
+      <div className="w-full max-w-md glass-card rounded-2xl p-5 sm:p-8 text-center shadow-2xl border border-slate-800">
+        <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-amber-500/10 border border-amber-500/20 text-2xl sm:text-3xl mb-5">
           ⏳
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Registration Under Review</h1>
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Registration Under Review</h1>
         <p className="mt-2 text-sm text-slate-300">
           Hello <span className="font-semibold text-white">{user?.name || 'Student'}</span>! Your registration is currently waiting for approval from your college administrator.
         </p>

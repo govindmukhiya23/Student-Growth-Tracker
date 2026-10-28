@@ -73,30 +73,30 @@ export default function AdminRegistrationsPage() {
   const isLoading = activeTab === 'pending' ? loadingPending : loadingAll;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Student Approvals & Management</h1>
-            <span className="rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold text-indigo-300 border border-indigo-500/30">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Student Approvals & Management</h1>
+            <span className="rounded-full bg-indigo-500/20 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-indigo-300 border border-indigo-500/30">
               Admin Control
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-400 border border-emerald-500/20">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live Sync (Realtime)
+              Live Sync
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-400">
             Review student registrations, grant posting privileges, or manage existing accounts
           </p>
         </div>
 
         {/* Tab Controls */}
-        <div className="flex items-center rounded-xl bg-slate-900/90 p-1 border border-slate-800">
+        <div className="flex items-center rounded-xl bg-slate-900/90 p-1 border border-slate-800 self-start sm:self-auto">
           <button
             onClick={() => setActiveTab('pending')}
-            className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+            className={`rounded-lg px-3.5 sm:px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'pending'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                 : 'text-slate-400 hover:text-white'
@@ -106,7 +106,7 @@ export default function AdminRegistrationsPage() {
           </button>
           <button
             onClick={() => setActiveTab('all')}
-            className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+            className={`rounded-lg px-3.5 sm:px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'all'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                 : 'text-slate-400 hover:text-white'
@@ -125,13 +125,17 @@ export default function AdminRegistrationsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by student name, username, or email…"
-            className="w-full sm:max-w-md rounded-xl bg-slate-900/80 border border-slate-700/80 px-4 py-2 text-sm text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="w-full sm:max-w-md rounded-xl bg-slate-900/80 border border-slate-700/80 px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </div>
       )}
 
       {/* Main Table / Grid */}
       <div className="overflow-hidden rounded-2xl glass-card border border-slate-800 shadow-xl">
+        <div className="block sm:hidden text-center text-[10px] text-slate-500 py-1.5 bg-slate-900/60 border-b border-slate-800">
+          ← Swipe horizontally to see all columns →
+        </div>
+
         {isLoading ? (
           <div className="flex h-64 items-center justify-center text-sm text-slate-400">
             <span className="animate-pulse">Loading registrations…</span>
@@ -151,16 +155,16 @@ export default function AdminRegistrationsPage() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="table-responsive-container">
+            <table className="w-full min-w-[680px] text-left text-xs text-slate-300">
               <thead className="bg-slate-900/80 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-800">
                 <tr>
-                  <th className="px-6 py-4">Student</th>
-                  <th className="px-6 py-4">College & Course</th>
-                  <th className="px-6 py-4">Student ID / Roll No</th>
-                  <th className="px-6 py-4">Registered</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
+                  <th className="px-4 sm:px-6 py-4">Student</th>
+                  <th className="px-4 sm:px-6 py-4">College & Course</th>
+                  <th className="px-4 sm:px-6 py-4">Student ID / Roll No</th>
+                  <th className="px-4 sm:px-6 py-4">Registered</th>
+                  <th className="px-4 sm:px-6 py-4">Status</th>
+                  <th className="px-4 sm:px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">

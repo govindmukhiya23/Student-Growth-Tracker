@@ -17,24 +17,24 @@ export default function MyPostsPage() {
   const counts = data?.counts || { total: 0, pending: 0, verified: 0, rejected: 0 };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">My LinkedIn Submissions</h1>
-            <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">My LinkedIn Submissions</h1>
+            <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-indigo-400 border border-indigo-500/20">
               Student Activity
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-400">
             Submit your daily LinkedIn posts and track their verification status
           </p>
         </div>
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+          className="w-full sm:w-auto justify-center rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-blue-500 transition-all flex items-center gap-2 cursor-pointer"
         >
           <span className="text-base leading-none font-bold">+</span>
           Submit LinkedIn Post
@@ -42,27 +42,27 @@ export default function MyPostsPage() {
       </div>
 
       {/* Summary KPI Badges */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div className="glass-card rounded-2xl p-4 border border-slate-800">
-          <div className="text-xs font-medium text-slate-400">Total Submissions</div>
-          <div className="mt-1 text-2xl font-bold text-white">{counts.total}</div>
+          <div className="text-[11px] sm:text-xs font-medium text-slate-400">Total Submissions</div>
+          <div className="mt-1 text-xl sm:text-2xl font-bold text-white">{counts.total}</div>
         </div>
         <div className="glass-card rounded-2xl p-4 border border-slate-800">
-          <div className="text-xs font-medium text-emerald-400">Verified Posts</div>
-          <div className="mt-1 text-2xl font-bold text-emerald-300">{counts.verified}</div>
+          <div className="text-[11px] sm:text-xs font-medium text-emerald-400">Verified Posts</div>
+          <div className="mt-1 text-xl sm:text-2xl font-bold text-emerald-300">{counts.verified}</div>
         </div>
         <div className="glass-card rounded-2xl p-4 border border-slate-800">
-          <div className="text-xs font-medium text-amber-400">Under Review</div>
-          <div className="mt-1 text-2xl font-bold text-amber-300">{counts.pending}</div>
+          <div className="text-[11px] sm:text-xs font-medium text-amber-400">Under Review</div>
+          <div className="mt-1 text-xl sm:text-2xl font-bold text-amber-300">{counts.pending}</div>
         </div>
         <div className="glass-card rounded-2xl p-4 border border-slate-800">
-          <div className="text-xs font-medium text-rose-400">Rejected</div>
-          <div className="mt-1 text-2xl font-bold text-rose-300">{counts.rejected}</div>
+          <div className="text-[11px] sm:text-xs font-medium text-rose-400">Rejected</div>
+          <div className="mt-1 text-xl sm:text-2xl font-bold text-rose-300">{counts.rejected}</div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3">
+      <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3 overflow-x-auto no-scrollbar max-w-full">
         {[
           { label: 'All Posts', val: '' },
           { label: 'Pending', val: 'pending' },
@@ -72,7 +72,7 @@ export default function MyPostsPage() {
           <button
             key={tab.val}
             onClick={() => setStatusFilter(tab.val)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               statusFilter === tab.val
                 ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800/60'

@@ -21,23 +21,23 @@ export default function LeaderboardPage() {
   const topThree = list.slice(0, 3);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Campus Leaderboard</h1>
-            <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-400 border border-amber-500/20">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Campus Leaderboard</h1>
+            <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold text-amber-400 border border-amber-500/20">
               Rankings & Streaks
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-400">
             Top students building their professional presence and LinkedIn posting streaks
           </p>
         </div>
 
         {/* Timeframe Buttons */}
-        <div className="flex items-center rounded-xl bg-slate-900/90 p-1 border border-slate-800 self-start sm:self-auto">
+        <div className="flex items-center rounded-xl bg-slate-900/90 p-1 border border-slate-800 self-start sm:self-auto w-full sm:w-auto justify-center">
           {[
             { label: 'All Time', val: 'all' },
             { label: 'This Month', val: 'month' },
@@ -46,7 +46,7 @@ export default function LeaderboardPage() {
             <button
               key={t.val}
               onClick={() => setTimeframe(t.val)}
-              className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-none text-center rounded-lg px-3 sm:px-3.5 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                 timeframe === t.val
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                   : 'text-slate-400 hover:text-white'
@@ -137,16 +137,19 @@ export default function LeaderboardPage() {
             No rankings available for the selected filters.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="table-responsive-container">
+            <div className="block sm:hidden text-center text-[10px] text-slate-500 py-1.5 bg-slate-900/60 border-b border-slate-800">
+              ← Swipe horizontally to see full rankings →
+            </div>
+            <table className="w-full min-w-[620px] text-left text-xs text-slate-300">
               <thead className="bg-slate-900/80 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-800">
                 <tr>
-                  <th className="px-6 py-3.5">Rank</th>
-                  <th className="px-6 py-3.5">Student</th>
-                  <th className="px-6 py-3.5">College & Year</th>
-                  <th className="px-6 py-3.5">Current Streak</th>
-                  <th className="px-6 py-3.5">Best Streak</th>
-                  <th className="px-6 py-3.5 text-right">Points</th>
+                  <th className="px-4 sm:px-6 py-3.5">Rank</th>
+                  <th className="px-4 sm:px-6 py-3.5">Student</th>
+                  <th className="px-4 sm:px-6 py-3.5">College & Year</th>
+                  <th className="px-4 sm:px-6 py-3.5">Current Streak</th>
+                  <th className="px-4 sm:px-6 py-3.5">Best Streak</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-right">Points</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-medium">

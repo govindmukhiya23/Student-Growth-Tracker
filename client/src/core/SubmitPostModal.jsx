@@ -54,8 +54,8 @@ export default function SubmitPostModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg rounded-2xl glass-card p-6 shadow-2xl border border-slate-700/80">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-4">
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl glass-card p-4 sm:p-6 shadow-2xl border border-slate-700/80">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold">

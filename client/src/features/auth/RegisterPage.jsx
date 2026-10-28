@@ -54,10 +54,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-4 py-8">
-      <div className="w-full max-w-lg glass-card rounded-2xl p-8 shadow-2xl border border-slate-800">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-6 sm:py-10">
+      <div className="w-full max-w-lg glass-card rounded-2xl p-5 sm:p-8 shadow-2xl border border-slate-800">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-white">Student Registration</h1>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Student Registration</h1>
           <p className="mt-1 text-sm text-slate-400">
             Join your college habit cohort and start sharing your LinkedIn growth
           </p>
